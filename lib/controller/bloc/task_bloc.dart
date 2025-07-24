@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'package:todo_app/model/task_model.dart';
 
 part 'task_event.dart';
 part 'task_state.dart';
 
-class TaskBloc extends Bloc<TaskEvent, TaskState> {
+class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
   TaskBloc() : super(TaskInitial()) {
     // add New task
     on<AddTaskEvent>(_addTask);
@@ -56,5 +57,17 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         )
         .toList();
     emit(TaskUpdate(newList));
+  }
+
+  @override
+  TaskState? fromJson(Map<String, dynamic> json) {
+    return TaskUpdate(
+      json['taskList'].map((task) => TaskModel.fromJson(task)).toList(),
+    );
+  }
+
+  @override
+  Map<String, dynamic>? toJson(TaskState state) {
+    return {'taskList': state.taskList.map((task) => task.toJson()).toList()};
   }
 }

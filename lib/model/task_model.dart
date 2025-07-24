@@ -21,6 +21,18 @@ class TaskModel extends Equatable {
     );
   }
 
+  factory TaskModel.fromJson(Map<String, dynamic> json) {
+    return TaskModel(
+      id: json['id'] as int,
+      title: json['title'] as String,
+      isCompleted: json['isCompleted'] as bool,
+    );
+  }
+
+  TaskModel toJson() {
+    return TaskModel(id: id, title: title, isCompleted: isCompleted);
+  }
+
   @override
   List<Object?> get props => [id, title, isCompleted];
 }

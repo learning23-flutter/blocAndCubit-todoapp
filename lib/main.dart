@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:todo_app/controller/bloc/task_bloc.dart';
 
-void main() {
+void main() async {
+  //
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize HydratedBloc storage
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: HydratedStorageDirectory(
+      (await getTemporaryDirectory()).path,
+    ),
+  );
+
   runApp(const MyApp());
 }
 
